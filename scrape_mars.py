@@ -13,10 +13,9 @@ import pandas as pd
 
 
 
-conn = 'mongodb://localhost:27017'
-client = pymongo.MongoClient(conn)
 
 def scrape():
+    ans = {}
     # URL of page to be scraped
     url = 'https://mars.nasa.gov/news/'
     # Retrieve page with the requests module
@@ -36,7 +35,7 @@ def scrape():
         desc= desc.replace('\n',"")
         articles.append({'headline':headline, 'description':desc})
     #articles has the mars headlines
-
+    ans['articles'] = articles
     #now doing image load
     executable_path = {'executable_path': 'chromedriver.exe'}
     browser = Browser('chrome', **executable_path, headless=False)
@@ -45,7 +44,7 @@ def scrape():
     browser.visit(pic_url)
     el = browser.find_link_by_partial_text('FULL IMAGE')
     featured_image_url =base_url + el['data-fancybox-href']
-
+    ans['featured_pic'] = featured_image_url
     #Finding mars weather
 
     twit_url = 'https://twitter.com/marswxreport'
@@ -55,7 +54,7 @@ def scrape():
 
     feed = twoup.find('div',class_='js-tweet-text-container')#,class_='TwetTextSize')
     mars_weather  = feed.find('p').text
-     
+    ans['weather'] = mars_weather
 
     #getting facts
     facts_url = 'https://space-facts.com/mars/'
@@ -64,16 +63,22 @@ def scrape():
     tab = fact_tables[0]
     tab = tab.rename(columns={0:'Feature',1:'Fact'})
     #tab = tab.set_index('Feature')
-    tab.to_html().replace('\n','')
+    tab_html = tab.to_html().replace('\n','')
+    ans['facts'] = tab_html
 
 
+    hemi_images = [{
+        'Hemisphere':'Cerberus','url':'https://astropedia.astrogeology.usgs.gov/download/Mars/Viking/cerberus_enhanced.tif/full.jpg'},
+        {'Hemisphere':'Schiaparelli','url':'http://astropedia.astrogeology.usgs.gov/download/Mars/Viking/schiaparelli_enhanced.tif/full.jpg'},
+        {'Hemisphere':'Syrtis Major','url':'http://astropedia.astrogeology.usgs.gov/download/Mars/Viking/syrtis_major_enhanced.tif/full.jpg'},
+        {'Hemisphere':'Valles Marineris','url':'http://astropedia.astrogeology.usgs.gov/download/Mars/Viking/valles_marineris_enhanced.tif/full.jpg'}
+    ]
+    ans['hemispheres'] = hemi_images\
+   # print(ans['hemisphes'])
+    print('hello world')
+    return ans
 
-    hemi_images = {
-        'Hemisphere':'Cerberus','url':'https://astropedia.astrogeology.usgs.gov/download/Mars/Viking/cerberus_enhanced.tif/full.jpg',
-        'Hemisphere':'Schiaparelli','url':'http://astropedia.astrogeology.usgs.gov/download/Mars/Viking/schiaparelli_enhanced.tif/full.jpg',
-        'Hemisphere':'Syrtis Major','url':'http://astropedia.astrogeology.usgs.gov/download/Mars/Viking/syrtis_major_enhanced.tif/full.jpg',
-        'Hemisphere':'Valles Marineris','url':'http://astropedia.astrogeology.usgs.gov/download/Mars/Viking/valles_marineris_enhanced.tif/full.jpg'
-    }
+#print(scrape())
 
 
 
