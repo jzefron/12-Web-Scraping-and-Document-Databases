@@ -1,0 +1,54 @@
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Hot Finds</title>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+</head>
+
+<body>
+  <div class="container">
+
+    <div class="jumbotron text-center">
+      <h1>Get YOUR MARS INFO HERE</h1>
+      <p><a class="btn btn-primary btn-lg" href="/scrape" role="button">SCRAPE</a></p>
+    </div>
+
+   
+  </div>
+  <h3>Current Mars News</h2>
+  <h2>{{data.articles.0.headline}}</h2>
+  <br>
+  {{data.articles.0.description}}
+
+  <h3> MARS FACTS</h3>
+  <br>
+  <div>
+    {{data.facts |safe}}
+  </div>
+ 
+  <br>
+  <h3>Featured Picture</h3>
+  <figure class="figure">
+    <img src='{{data.featured_pic}}'' class="figure-img img-fluid rounded" >
+    <figcaption class="figure-caption">Current Featured Picture of Mars from NASA</figcaption> 
+  </figure>
+ 
+  <div class="container">
+    
+    {% for hemi in data.hemispheres  %}
+      <div class="col-md-6 col-sm-12">
+        <figure class="figure">
+          <img src={{hemi.url}} class="figure-img img-fluid rounded" >
+          <figcaption class="figure-caption"> View of {{hemi.Hemisphere}} Hemisphere </figcaption>
+        </figure>
+      </div>
+     </div>
+     {% endfor %}
+        
+</body>
+
+
+</html>

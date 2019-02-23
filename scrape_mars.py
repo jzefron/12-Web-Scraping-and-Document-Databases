@@ -62,6 +62,7 @@ def scrape():
 
     tab = fact_tables[0]
     tab = tab.rename(columns={0:'Feature',1:'Fact'})
+    tab = tab.set_index('Feature')
     #tab = tab.set_index('Feature')
     tab_html = tab.to_html().replace('\n','')
     ans['facts'] = tab_html

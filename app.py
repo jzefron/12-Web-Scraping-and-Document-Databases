@@ -21,7 +21,8 @@ def scrape():
 
 @app.route("/")
 def home():
-    return ('Hello World')
+    mars_data = mongo.db.mars.find_one()
+    return render_template('index.html',data = mars_data)
     
 
 
