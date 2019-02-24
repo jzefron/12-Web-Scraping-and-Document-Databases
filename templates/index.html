@@ -37,17 +37,24 @@
   </figure>
  
   <div class="container">
+        <div class="row">
+    {% for  hemi in data.hemispheres  %}
     
-    {% for hemi in data.hemispheres  %}
+    
+
       <div class="col-md-6 col-sm-12">
         <figure class="figure">
-          <img src={{hemi.url}} class="figure-img img-fluid rounded" >
+          <img src={{hemi.url}} class="figure-img img-fluid rounded" width="350" height="350" >
           <figcaption class="figure-caption"> View of {{hemi.Hemisphere}} Hemisphere </figcaption>
         </figure>
       </div>
-     </div>
+     
+
+     
+     
      {% endfor %}
-        
+    </div>
+    </div> 
 </body>
 
 
